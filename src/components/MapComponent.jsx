@@ -11,26 +11,40 @@ const MapComponent = () => {
   const initialLongitude = -78.693342;
   const initialZoomLevel = 12;
   const mapboxAccessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+  const proxyBaseUrl = 'http://localhost:3001'
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data, error } = await supabase.from('potholes').select('*');
-        if (error) {
-          console.error('Error fetching potholes:', error.message);
-        } else {
-          console.log('Potholes fetched successfully:', data);
-          setPotholes(data);
-        }
-      } catch (error) {
-        console.error('Error fetching potholes:', error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  async function fetchData() {
+    try {
+      // Fetch data from Mapbox API via proxy server
+      const mapboxResponse = await fetch(`${proxyBaseUrl}/mapbox-api`);
+      const { data: mapboxData, error: mapboxError } = await mapboxResponse.json();
 
-    fetchData();
-  }, []); // Empty dependency array ensures this runs only on mount (client-side).
+      if (mapboxError) {
+        console.error('Error fetching potholes from Mapbox:', mapboxError.message);
+      } else {
+        console.log('Potholes fetched successfully from Mapbox:', mapboxData);
+        // Set Mapbox data in state (if needed)
+      }
+
+      // Fetch data from Supabase
+      const { data: supabaseData, error: supabaseError } = await supabase.from('potholes').select('*');
+
+      if (supabaseError) {
+        console.error('Error fetching potholes from Supabase:', supabaseError.message);
+      } else {
+        console.log('Potholes fetched successfully from Supabase:', supabaseData);
+        setPotholes(supabaseData);
+      }
+    } catch (error) {
+      console.error('Error fetching potholes:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  fetchData();
+}, []); 
 
   useEffect(() => {
     // Check if window object exists (i.e., we are on the client-side)
