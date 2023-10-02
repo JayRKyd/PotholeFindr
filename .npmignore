@@ -1,0 +1,7 @@
+.gitignore
+node_modules
+package-lock.json
+.git 
+dist
+build
+.DS_Store
