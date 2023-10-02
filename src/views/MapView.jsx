@@ -15,7 +15,7 @@ const MapView = () => {
     <img src={magnifyingGlass} alt="magnifying-glass" width={34} height={34} />
     <h1 className='text-3xl font-bold ml-1 tracking-tight text-white'>PotholeFinder</h1>
   </div>
-  <div className='flex flex-col gap-2 w-full'>
+  <div className='flex flex-col gap-2 w-full flex-center-column'>
     {/* Login Button */}
     <Link to='/signin' className="flex max-w-fit items-center justify-center rounded-lg border border-gray-600 text-white px-5 py-2 text-sm shadow-md hover:bg-gray-400 bg-gray-600 font-medium transition">Login</Link>
     
