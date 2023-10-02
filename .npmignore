@@ -5,3 +5,6 @@ package-lock.json
 dist
 build
 .DS_Store
+.log
+.lock
+.tmp
